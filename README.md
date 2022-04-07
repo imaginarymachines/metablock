@@ -9,6 +9,10 @@
 - Install javascript dependencies
     - `yarn`
 
+## Create Installable ZIP File
+
+- `npx plugin-machine plugin zip`
+
 ## Working With JavaScript
 
 - Build JS/CSS
@@ -36,4 +40,3 @@ A [docker-compose](https://docs.docker.com/samples/wordpress/)-based local devel
     - Setup site with WP CLI
         - `docker-compose run wpcli wp core install --url=http://localhost:6091 --title="Metablock" --admin_user=admin0 --admin_email=something@example.com`
         - `docker-compose run wpcli wp user create admin admin@example.com --role=administrator --user_pass=pass`
-
