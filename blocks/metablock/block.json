@@ -1,0 +1,20 @@
+{
+    "name": "joshmetablock/metablock",
+    "title": "Meta Block",
+    "description": "Show a meta field",
+    "attributes": {
+        "field_name": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "category": "widgets",
+    "apiVersion": 2,
+    "icon": "smiley",
+    "supports": {
+        "html": false
+    },
+    "editorScript": "file:../../build/block-metablock.js",
+	"editorStyle": "file:../../build/block-metablock.css",
+	"style": "file:../../build/block-metablock.css"
+}

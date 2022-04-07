@@ -1,0 +1,30 @@
+{
+    "slug": "joshmetablock",
+    "pluginId": 221,
+    "buildId": 245,
+    "entryPoints": {
+        "adminPages": [],
+        "blocks": [
+            "metablock"
+        ]
+    },
+    "buildIncludes": [
+        "joshmetablock.php",
+        "readme.txt",
+        "php",
+        "vendor",
+        "build",
+        "inc",
+        "blocks/metablock/init.php"
+    ],
+    "buildSteps": {
+        "dev": [
+            "yarn",
+            "yarn start"
+        ],
+        "prod": [
+            "yarn",
+            "yarn build"
+        ]
+    }
+}
