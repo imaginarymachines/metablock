@@ -18,7 +18,35 @@ add_action('init', function () {
                     $value = implode(', ', $value);
                 }
                 return sprintf('<p>%s</p>', esc_html($value));
-            }
+            },
+
         ]);
     }
+});
+
+/**
+ * When saving a post, save the metablock field
+ *
+ * @see: https://developer.wordpress.org/reference/hooks/field_no_prefix_save_pre/
+ */
+add_action('rest_insert_post', function($post){
+    //No blocks? Return early
+    if( ! has_blocks($post->post_content) ){
+        return;
+    }
+    $block_name = 'joshmetablock/metablock';
+    $blocks = parse_blocks($post->post_content);
+    //Find out block
+    foreach ($blocks as $block) {
+        if( $block['blockName'] === $block_name ){
+            //Get field name and value
+            $field_name = isset( $block['attrs']['field_name'])? $block['attrs']['field_name'] : null;
+            $value = isset($block['attrs']['field_value']) ? $block['attrs']['field_value'] : null;
+            if( ! $field_name || ! $value ){
+                continue;
+            }
+            update_post_meta($post->ID, $field_name, $value);
+        }
+    }
+
 });
