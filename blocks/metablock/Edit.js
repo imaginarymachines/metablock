@@ -18,9 +18,18 @@ export default function Edit({ attributes, setAttributes, isSelected }) {
 		editPost({ meta: keyAndValue });
 	};
 
-	const { field_name } = attributes;
+	//Get attribute values
+	const { field_name, field_value } = attributes;
+
+	//Update field_name
 	const setFieldName = (value) => {
-		setAttributes({ field_name: value });
+		setAttributes({ ...attributes, field_name: value });
+	};
+
+	//Update field_value
+	const setFieldValue = (newValue) => {
+		setMeta({ [field_name]: newValue });
+		setAttributes({ ...attributes, field_value: newValue });
 	};
 
 	return (
@@ -34,12 +43,12 @@ export default function Edit({ attributes, setAttributes, isSelected }) {
 				{field_name.length > 0 ? (
 					<TextControl
 						label={__("Field Value")}
-						onChange={(newValue) => setMeta({ [field_name]: newValue })}
-						value={meta && meta[field_name] ? meta[field_name] : ""}
+						onChange={setFieldValue}
+						value={field_value}
 					/>
 				) : null}
 			</InspectorControls>
-			{meta && meta[field_name] ? <p>{meta[field_name]}</p> : <p>No value</p>}
+			{field_value ? <p>{field_value}</p> : <p>No value</p>}
 		</div>
 	);
 }
