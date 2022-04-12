@@ -25,11 +25,11 @@ add_action('init', function () {
 });
 
 /**
- * When saving a post, save the metablock field
+ * Finds all instnace of our block and calls $callback on each
  *
- * @see: https://developer.wordpress.org/reference/hooks/field_no_prefix_save_pre/
+ *
  */
-add_action('rest_insert_post', function($post){
+function joshmetablock_handler($post,$callback){
     //No blocks? Return early
     if( ! has_blocks($post->post_content) ){
         return;
@@ -42,11 +42,45 @@ add_action('rest_insert_post', function($post){
             //Get field name and value
             $field_name = isset( $block['attrs']['field_name'])? $block['attrs']['field_name'] : null;
             $value = isset($block['attrs']['field_value']) ? $block['attrs']['field_value'] : null;
+            //no value? don't update
             if( ! $field_name || ! $value ){
                 continue;
+            }else{
+                $callback($post,$field_name,$value);
             }
-            update_post_meta($post->ID, $field_name, $value);
+
         }
     }
 
+}
+
+/**
+ * Before the block editor pre-loads its data, register meta fields
+ */
+add_filter('block_editor_rest_api_preload_paths',function( $preload_paths, $block_editor_context){
+    //Use handler to find all metablock blocks
+    joshmetablock_handler($block_editor_context->post,function($post,$field_name,$value){
+        //Register the field for the found block
+        register_meta($post->post_type, $field_name, [
+            'type' => 'string',//change to integer if is_int($value) ?
+            'single' => true,
+            'show_in_rest' => true,
+        ] );
+    });
+    //Return the preload paths unchanged
+    return $preload_paths;
+}, 10, 2 );
+
+
+/**
+ * When saving a post, save the metablock field
+ *
+ * @see: https://developer.wordpress.org/reference/hooks/field_no_prefix_save_pre/
+ */
+add_action('rest_insert_post', function($post){
+    //Find blocks using handler
+    joshmetablock_handler($post,function($post,$field_name,$value){
+        //Update the field value when found
+        update_post_meta($post->ID, $field_name, $value);
+    });
 });

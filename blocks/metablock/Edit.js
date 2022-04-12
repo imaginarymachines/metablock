@@ -3,17 +3,17 @@ import { __ } from "@wordpress/i18n";
 import { useBlockProps } from "@wordpress/block-editor";
 import { InspectorControls } from "@wordpress/block-editor";
 import { useSelect, useDispatch } from "@wordpress/data";
+import { useEffect } from "@wordpress/element";
 
 import "./editor.scss";
 
 export default function Edit({ attributes, setAttributes, isSelected }) {
 	//Get meta value
-
 	const { meta } = useSelect((select) => ({
 		meta: select("core/editor").getEditedPostAttribute("meta"),
 	}));
+	//Updates meta value
 	const { editPost } = useDispatch("core/editor");
-
 	const setMeta = (keyAndValue) => {
 		editPost({ meta: keyAndValue });
 	};
@@ -31,6 +31,14 @@ export default function Edit({ attributes, setAttributes, isSelected }) {
 		setMeta({ [field_name]: newValue });
 		setAttributes({ ...attributes, field_value: newValue });
 	};
+
+	//Re-set attribute to meta value
+	//Meta value may have change since last load
+	useEffect(() => {
+		if (meta[field_name] !== undefined) {
+			setAttributes({ ...attributes, field_value: meta[field_name] });
+		}
+	}, []);
 
 	return (
 		<div {...useBlockProps()}>
