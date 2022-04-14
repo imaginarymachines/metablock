@@ -6,6 +6,10 @@
         "field_name": {
             "type": "string",
             "default": ""
+        },
+        "field_value": {
+            "type": "string",
+            "default": ""
         }
     },
     "category": "widgets",
