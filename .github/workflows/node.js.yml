@@ -27,5 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn
-    - run: yarn zip
-    - run: yarn upload
+    - run: npm i -g plugin-machine
+    - run: plugin-machine --ci --token=${ secrets.PLUGIN_MACHINE_TOKEN }
+    - run: plugin-machine plugin build
+    - run: plugin-machine plugin zip
+    - run: plugin-machine upload
