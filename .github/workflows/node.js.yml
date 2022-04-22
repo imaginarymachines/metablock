@@ -23,7 +23,7 @@ jobs:
         cache: 'yarn'
     - run: yarn
     - run: npm i -g plugin-machine
-    - run: plugin-machine --ci --token=${ secrets.PLUGIN_MACHINE_TOKEN }
+    - run: plugin-machine login --token="${{ secrets.PLUGIN_MACHINE_TOKEN }}" --ci
     - run: plugin-machine plugin build
     - run: plugin-machine plugin zip
     - run: plugin-machine upload
