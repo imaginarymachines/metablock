@@ -12,7 +12,9 @@
         "format:js": "wp-scripts format-js",
         "lint:css": "wp-scripts lint-style",
         "lint:js": "wp-scripts lint-js",
-        "start": "wp-scripts start"
+        "start": "wp-scripts start",
+        "zip": "plugin-machine plugin build && plugin-machine plugin zip",
+        "upload": "plugin-machine upload"
     },
     "devDependencies": {
         "@babel/core": "^7",
